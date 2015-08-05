@@ -6,8 +6,9 @@
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
 
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <!-- <link rel="stylesheet" type="text/css" href="css/index.css"> -->
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" >
+    <link rel="stylesheet" type="text/css" href="css/main.css">
   
     
     <script src="cordova.js"></script>
@@ -28,36 +29,6 @@
 
 <!-- Quick inline CSS -->
 <style>
-    .navbar {
-        margin-bottom: 0;
-        color: white;
-    }
-    .jumbotron {
-        background-image: url(img/Scarlett.jpg);
-        background-position: center;
-        background-size: 100% auto;
-        max-height: 50%;
-        height: 20em;
-        margin-bottom:0px;
-    }
-
-    .btn:focus,
-    .btn.active {
-        outline: none;
-        background-color: #0A0;
-        color: #0F0;
-        -webkit-text-shadow: 0 0 10px #00FF00;
-        text-shadow: 0 0 10px #00FF00;
-        -webkit-box-shadow: 0 0 10px #00FF00;
-        box-shadow: 0 0 10px #00FF00;
-    }
-    .btn
-    {
-        width:100%;
-        height:140px;
-        margin-bottom:16px;
-        background-color: rgb(192,192,192);
-    }
 
 
 </style>
@@ -79,16 +50,18 @@
             <h3 class="text-center">Relay Prototype </h3>
             <div class="row">
 
-                <div class="col-xs-6"><button class="btn btn-lg" ng-click="FindDevices()">Scan</button></div>
-                <div class="col-xs-6"><button class="btn btn-lg" ng-class="{'active':!status[0]}" ng-click="setStatus(0)">Relay 1</button></div>
-                <div class="col-xs-6"><button class="btn btn-lg" ng-class="{'active':!status[1]}" ng-click="setStatus(1)">Relay 2</button></div>
-                <div class="col-xs-6"><button class="btn btn-lg" ng-class="{'active':!status[2]}" ng-click="setStatus(2)">Relay 3</button></div>
-                <div class="col-xs-6"><button class="btn btn-lg" ng-class="{'active':!status[3]}" ng-click="setStatus(3)">Relay 4</button></div>
-                <div class="col-xs-6"><button class="btn btn-lg" ng-class="{'active':!status[4]}" ng-click="setStatus(4)">Relay 5</button></div>
-                <div class="col-xs-6"><button class="btn btn-lg" ng-class="{'active':!status[5]}" ng-click="setStatus(5)">Relay 6</button></div>
-                <div class="col-xs-6"><button class="btn btn-lg" ng-class="{'active':!status[6]}" ng-click="setStatus(6)">Relay 7</button></div>
-                <div class="col-xs-6"><button class="btn btn-lg" ng-class="{'active':!status[7]}" ng-click="setStatus(7)">Relay 8</button></div>
-                <div class="col-xs-6"><button class="btn btn-lg" ng-class="" ng-click="remote_animate()">Animate</button></div>
+                <div class="col-xs-12"><button class="btn btn-relay" ng-click="FindDevices()">Scan</button></div>
+
+                <div class="col-xs-6 col-sm-4 col-md-3"><input type="checkbox" class="btn btn-relay" id="relay0" name="relay0" ng-class="{'active':!status[0]}" ng-click="setStatus(0)"><label for="relay0">Relay 1</label></input></div>
+                <div class="col-xs-6 col-sm-4 col-md-3"><input type="checkbox" class="btn btn-relay" id="relay1" name="relay1" ng-class="{'active':!status[1]}" ng-click="setStatus(1)"><label for="relay1">Relay 2</label></input></div>
+                <div class="col-xs-6 col-sm-4 col-md-3"><input type="checkbox" class="btn btn-relay" id="relay2" name="relay2" ng-class="{'active':!status[2]}" ng-click="setStatus(2)"><label for="relay2">Relay 3</label></input></div>
+                <div class="col-xs-6 col-sm-4 col-md-3"><input type="checkbox" class="btn btn-relay" id="relay3" name="relay3" ng-class="{'active':!status[3]}" ng-click="setStatus(3)"><label for="relay3">Relay 4</label></input></div>
+                <div class="col-xs-6 col-sm-4 col-md-3"><input type="checkbox" class="btn btn-relay" id="relay4" name="relay4" ng-class="{'active':!status[4]}" ng-click="setStatus(4)"><label for="relay4">Relay 5</label></input></div>
+                <div class="col-xs-6 col-sm-4 col-md-3"><input type="checkbox" class="btn btn-relay" id="relay5" name="relay5" ng-class="{'active':!status[5]}" ng-click="setStatus(5)"><label for="relay5">Relay 6</label></input></div>
+                <div class="col-xs-6 col-sm-4 col-md-3"><input type="checkbox" class="btn btn-relay" id="relay6" name="relay6" ng-class="{'active':!status[6]}" ng-click="setStatus(6)"><label for="relay6">Relay 7</label></input></div>
+                <div class="col-xs-6 col-sm-4 col-md-3"><input type="checkbox" class="btn btn-relay" id="relay7" name="relay7" ng-class="{'active':!status[7]}" ng-click="setStatus(7)"><label for="relay7">Relay 8</label></input></div>
+
+                <div class="col-xs-12"><button class="btn btn-relay" ng-class="" ng-click="remote_animate()">Animate</button></div>
     
 
             </div>
@@ -104,6 +77,6 @@
 </div>
 <!-- End Content -->
     
-
+<script src="//localhost:4020/livereload.js"></script>
 </body>
 </html>
