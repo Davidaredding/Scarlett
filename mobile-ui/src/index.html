@@ -72,11 +72,34 @@
                     </li>
                 </ul> 
             </div>
-        
+        </div>
+        <div class="col-sm-4">
+            <!-- <input type="text" class="color"> -->
+            <input type="text" class="col-xs-6 col-sm-3 color color-1">
+            <input type="text" class="col-xs-6 col-sm-3 color color-2">
+            <input type="text" class="col-xs-6 col-sm-3 color color-3">
+            <input type="text" class="col-xs-6 col-sm-3 color color-4">
+            <input type="text" class="col-xs-6 col-sm-3 color color-5">
+            <input type="text" class="col-xs-6 col-sm-3 color color-6">
+            <input type="text" class="col-xs-6 col-sm-3 color color-7">
+            <input type="text" class="col-xs-6 col-sm-3 color color-8">
+        </div>
     </div>
 </div>
 <!-- End Content -->
     
 <script src="//localhost:4020/livereload.js"></script>
+
+<!-- Spectrum -->
+<script src='js/spectrum.js'></script>
+<link rel='stylesheet' href='js/spectrum.css' />
+
 </body>
 </html>
+<script>
+    jQuery(document).ready(function($) {
+        $('.color').spectrum({
+            color: "#f00"
+        });
+    });
+</script>
