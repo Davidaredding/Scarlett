@@ -30,4 +30,5 @@ var cordovaApp = {
 };
 
 cordovaApp.initialize();
-
+var app = angular.module('jeeputer',[]);
+app.run(function(){FastClick.attach(document.body)});
