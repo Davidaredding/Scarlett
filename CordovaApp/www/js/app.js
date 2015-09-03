@@ -1,9 +1,34 @@
 
-app.controller('app',function($scope,$BlueTooth,$interval)
+app.controller('app',function($scope,$BlueTooth,$interval, DeviceModel)
 {
-    $scope.status = [1,1,1,1,1,1,1,1];
     $scope.BlueToothDevices = [];
     $scope.ConnectedDevice_id = "";
+    $scope.virtual_switches = 
+    [
+        {
+            GroupName: 'Fog Lights',
+            Devices: 
+            [
+                new DeviceModel({Name: "Driver Fog-light", Address:0x01}),
+                new DeviceModel({Name: "Passenger Fog-light", Address:0x02})
+            ],
+            IconDescriptor: "Fog-Light"
+        },
+        {
+            GroupName: 'Spot Lights',
+            Devices: 
+            [
+                new DeviceModel({Name: "Driver Spot-light", Address:0x03}),
+                new DeviceModel({Name: "Passenger Spot-light", Address:0x04})
+            ],
+            IconDescriptor: "Spot-Light"
+        }
+    ];
+
+
+    console.log('loaded');
+
+
     $scope.setStatus = function(index){
         $scope.status[index] = !$scope.status[index];
         $scope.processStatus();

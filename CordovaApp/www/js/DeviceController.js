@@ -56,33 +56,6 @@ app.Controller('DeviceDriver',['DeviceTypes','DeviceModel','DeviceGroup',
 			{'Type':DeviceTypes.Binary},
 			{'Type':DeviceTypes.Binary},
 			{'Type':DeviceTypes.Binary},
-
-			{'Type':DeviceTypes.Color}, 
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			//Extended TLC.
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-			{'Type':DeviceTypes.Color},
-
-			//Remaining PWM Pin from the 4th TLC5940 and only "Dimmable" pin currently not implemented for use
-			//{'Type': DeviceTypes.PWM, 'AddressMask': 0x2000000}
-
 		]; 
 
 }]);
