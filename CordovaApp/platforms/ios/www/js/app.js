@@ -1,6 +1,92 @@
 var app = angular.module('jeeputer',[]);
 app.run(function(){
 	FastClick.attach(document.body);
+	
+	if(typeof ble === "undefined")
+	{
+		console.log("No bluetooth interface found; Running from debug ble service.");
+		ble = {
+			self: this,
+			startScan: function(services,success,error)
+			{
+				console.log("Starting scan");
+				var p = this.Peripheral_Mock(false);
+				p.name="Dummy BLE device";
+				p.id = "D8479A4F-7517-BCD3-91B5-3302B2F81802";
+				p.rssi = 50;
+				p.advertising = services;
+
+				success(p);
+			},
+			stopScan: function(success,fail){
+				console.log("Stopping scan");
+				success();
+			},
+			connect: function(device_id,success,error){
+				console.log("Connecting");
+				var p = this.Peripheral_Mock(true);
+				var c = this.CharacteristicMock();
+
+				c.service = "FFE0";
+				c.characteristic = "FFE1";
+				c.properties = ["read","writeWithoutNotify"];
+
+				p.name="Dummy BLE device";
+				p.id = "D8479A4F-7517-BCD3-91B5-3302B2F81802";
+				p.rssi= 40;
+				p.advertising = ["FFE0"]
+				p.characteristics = [c]
+				setTimeout(success,500,p);
+				
+			},
+			disconnect: function(device_id,success,error){console.error("Disconnect is not implemented yet.")},
+			writeCommand: function(device_id,service,characteristic,buffer,success,error)
+			{
+				console.log('writing...');
+				setTimeout(success,0);
+			},
+			Peripheral_Mock: function(connected)
+			{
+				if(!connected)
+				{
+					var obj = 
+					{
+						name: "",
+						id: "",
+						advertising: [],
+						rssi: 0
+					}
+					return obj;
+				}
+				if(connected)
+				{
+					var obj = 
+					{
+						name: "",
+						id: "",
+						advertising: [],
+						rssi: 0,
+						services: [],
+						characteristics: []
+					};
+					return obj;
+				}
+			},
+
+			CharacteristicMock: function()
+			{
+				var obj = 
+				{
+					service: "",
+					characteristic: "",
+					properties: []
+				}
+				return obj;
+			}
+		}
+
+	}
+	
 });
 
 app.controller('app',function($scope,$BlueTooth, $interval)
@@ -18,8 +104,8 @@ app.controller('app',function($scope,$BlueTooth, $interval)
     $scope.processStatus = function()
     {
     	 $BlueTooth.Write($scope.ConnectedDevice_id, $scope.status)
-        .then(function(){})
-        .fail(function(){});
+        .then(function(){},function(){});
+        
     }
 
     $scope.FindDevices = function()
@@ -34,18 +120,18 @@ app.controller('app',function($scope,$BlueTooth, $interval)
     {
     	
     	$BlueTooth.ConnectToPeripheral(id)
-    		.then(function(){//resolved
+    		.then(
+    		function(){//resolved
     			alert("Resolved");
-
     		},
     		function(error){//error
     			alert("Error: " + error);
     		},
     		function(p){//update
+    			console.log("Connected!");
     			$scope.ConnectedDevice_id = p.id;
-    			alert("Connected!");
-    		})
-    		;
+    		});
+    		
     }
 
     $scope.remote_animate = function()
@@ -75,7 +161,8 @@ app.factory("$BlueTooth",function($q){
 			setTimeout(ble.stopScan,
 				3000,
 				function(){deferred.resolve(devices);},
-				function(){});
+				function(){}
+				);
 
 			ble.startScan(['FFE0'],
 				function(bt_device){
@@ -84,6 +171,7 @@ app.factory("$BlueTooth",function($q){
 						RSSI:bt_device.rssi,
 						ID:bt_device.id
 					};
+
 					devices.push(d);
 					
 				}, 
@@ -98,7 +186,7 @@ app.factory("$BlueTooth",function($q){
 		ConnectToPeripheral: function(BT_dev_id)
 		{
 			var deferred = $q.defer()
-			alert("Attempting to connect to " + BT_dev_id);
+			console.log("Attempting to connect to " + BT_dev_id);
 			ble.connect(BT_dev_id,
 					function(peripheral)
 					{
