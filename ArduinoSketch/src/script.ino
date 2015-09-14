@@ -17,24 +17,10 @@ void setup()
   hm10.begin(9600);
 
   pinMode(enabled,OUTPUT);
-  digitalWrite(enabled,LOW);
   pinMode(data,OUTPUT);
   pinMode(clk,OUTPUT);
   pinMode(latch,OUTPUT);
-  
-  digitalWrite(data,HIGH);
-  for(int x = 0; x<8; x++)
-  {
-    digitalWrite(clk,HIGH);
-    digitalWrite(clk,LOW);    
-  }
-  
-  digitalWrite(latch,HIGH);
-  digitalWrite(latch,LOW);
-  
-
-
-
+  digitalWrite(enabled,LOW); 
   
   Serial.println("STARTED");
   //If we don't do this the BTModule may not respond after being powered down.
