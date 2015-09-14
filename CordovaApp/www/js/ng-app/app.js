@@ -30,5 +30,42 @@ var cordovaApp = {
 };
 
 cordovaApp.initialize();
-var app = angular.module('jeeputer',[]);
+
+var app = angular.module('jeeputer',['ngRoute'])
 app.run(function(){FastClick.attach(document.body)});
+
+app.config(function($routeProvider){
+    $routeProvider
+        .when('/',{
+            templateUrl:'views/home.html',
+            controller: 'homeController'
+        })
+        .when('/settings/devices',{
+            templateUrl: 'views/devices.html'
+        })
+        .when('/settings/VirtualDevices',
+        {
+            templateUrl: 'views/virtualDevices.html'
+        })
+        .when('/settings/VirtualDevices/:vdId',
+        {
+            templateUrl: 'views/virtualDevice.html'
+        })
+        .otherwise({
+            redirectTo:'/'
+        })
+});
+
+app.controller('AppController',[AppController]);
+function AppController(){
+    
+}
+
+
+
+
+
+
+
+
+

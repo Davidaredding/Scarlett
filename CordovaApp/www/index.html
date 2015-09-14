@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="jeeputer">
+<html>
 <head>
     <meta http-equiv="Content-Security-Policy" content="">
     <meta name="format-detection" content="telephone=no">
@@ -8,22 +8,25 @@
 
     <!-- <link rel="stylesheet" type="text/css" href="css/index.css"> -->
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" >
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link href="css/main.css" rel="stylesheet" type="text/css">
   
     
     <script src="cordova.js"></script>
     <script src="js/node_modules/angular/angular.min.js"></script>
-
+    <script src="js/node_modules/angular-route/angular-route.min.js"></script>
     <script src="js/fastclick.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/index.js"></script>
-    
-    
 
-    <script src="js/app.js"></script> 
-    <script src="js/device_model.js"></script>
-    <script src="js/bluetooth_service.js"></script>
+    <script src="js/ng-app/app.js"></script> 
+    <script src="js/ng-app/controllers/home.js"></script>
+    <script src="js/ng-app/controllers/devices.js"></script>
+    <script src="js/ng-app/controllers/virtualDevice.js"></script>
+    <script src="js/ng-app/controllers/virtualDevices.js"></script>
+
+    <script src="js/ng-app/models/device.js"></script>
+    <script src="js/ng-app/services/bluetooth.js"></script>
+    <script src="js/ng-app/services/firmware.js"></script>
 
 
   <meta charset="utf-8">
@@ -39,37 +42,10 @@
 </style>
 
 
-<body ng-controller="app">
-<script src="js/fastclick.js"></script>
-<!-- Begin Content -->
-    
-    <div class="col-xs-12">
-        <button class="btn btn-relay" ng-click="FindDevices()">Scan for Devices</button>
+<body ng-app="jeeputer" ng-controller="AppController as app">
+    <div id="main">
+        <div ng-view></div>
     </div>
-
-    <div class="col-xs-12" ng-repeat="switch in virtual_switches">
-        <button class="btn btn-relay">{{switch.GroupName}}</button>
-    </div>
-                
-
-
-
-<div class="container-fluid" >
-    <div class="row">
-        <div class="col-xs-12 col-sm-8">
-            <div class="row">
-            </div>
-            <div class="row" style="margin-top:25px">
-                <ul>
-                    <li ng-repeat="bt_dev in BlueToothDevices track by $index">
-                        <a href="" ng-click="Connect(bt_dev.ID)">{{bt_dev.Name}}</a>
-                    </li>
-                </ul> 
-            </div>
-        
-    </div>
-</div>
-<!-- End Content -->
     
 <!--<script src="//localhost:4020/livereload.js"></script>-->
 </body>

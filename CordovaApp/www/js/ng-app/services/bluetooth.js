@@ -83,10 +83,11 @@ if(typeof ble === "undefined")
 
 	};
 
-app.factory("$BlueTooth",function($q){
-	return {
-		Scanning: false,
-		ScanForPeripherals: function()
+app.service("$Bluetooth",function($q){
+		
+		this.Scanning=false;
+
+		this.ScanForPeripherals = function()
 		{
 			var deferred = $q.defer();
 			var devices = [];
@@ -114,9 +115,9 @@ app.factory("$BlueTooth",function($q){
 				}
 			);
 			return deferred.promise;
-		},
+		};
 
-		ConnectToPeripheral: function(BT_dev_id)
+		this.ConnectToPeripheral= function(BT_dev_id)
 		{
 			var deferred = $q.defer()
 			console.log("Attempting to connect to " + BT_dev_id);
@@ -133,14 +134,14 @@ app.factory("$BlueTooth",function($q){
 				);
 
 			return deferred.promise;
-		},
+		};
 
-		DisconnectFromPeripheral: function(BT_dev_id)
+		this.DisconnectFromPeripheral = function(BT_dev_id)
 		{
 
-		},
+		};
 
-		Write: function(device_id, value){
+		this.Write= function(device_id, value){
 			var deferred = $q.defer();
 			var a = new Uint8Array(1);
 			a[0] = 0
@@ -160,6 +161,5 @@ app.factory("$BlueTooth",function($q){
 
 			return deferred.promise;
 		}
-	};
 
 });
