@@ -1,9 +1,9 @@
-app.controller('homeController',['$scope','$Bluetooth',function($scope,$Bluetooth,$interval)
+app.controller('homeController',['$scope','$Bluetooth','$interval',function($scope,$Bluetooth,$interval)
 {
     $scope.BlueToothDevices = [];
     $scope.ConnectedDevice_id = "";
     $scope.scanning = false;
-    $scope.status = [0,0,0,0,0,0,0,0];
+    $scope.status = [0,1,0,1,0,1,0,1];
 
     $scope.setStatus = function(index){
         $scope.status[index] = !$scope.status[index];
