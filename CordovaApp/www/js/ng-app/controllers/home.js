@@ -44,11 +44,9 @@ app.controller('homeController',['$scope','$Bluetooth','$interval',function($sco
         $Bluetooth.ConnectToPeripheral(id)
             .then(
             function(){//resolved
-                
                 $scope.ConnectedDevice_id = "";
             },
             function(error){//error
-                
                 $scope.ConnectedDevice_id = "";
             },
             function(p){//update
