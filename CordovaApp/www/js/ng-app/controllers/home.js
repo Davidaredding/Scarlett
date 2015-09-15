@@ -2,8 +2,17 @@ app.controller('homeController',['$scope','$Bluetooth','$interval',function($sco
 {
     $scope.BlueToothDevices = [];
     $scope.ConnectedDevice_id = "";
+    $scope.status = [0,0,0,0,0,0,0,0];
+
+    //Status
     $scope.scanning = false;
-    $scope.status = [0,1,0,1,0,1,0,1];
+    $scope.connecting = false;
+
+    $scope.$watchCollection("status",function(n,o){
+        if(n==o)
+            return;
+        $scope.processStatus();
+    });
 
     $scope.setStatus = function(index){
         $scope.status[index] = !$scope.status[index];
@@ -27,6 +36,7 @@ app.controller('homeController',['$scope','$Bluetooth','$interval',function($sco
         $Bluetooth.ScanForPeripherals()
             .then(function(devices){
                 $scope.BlueToothDevices = devices;
+                $scope.scanning = false;
             });
     }
 
@@ -34,10 +44,12 @@ app.controller('homeController',['$scope','$Bluetooth','$interval',function($sco
         $Bluetooth.ConnectToPeripheral(id)
             .then(
             function(){//resolved
-                alert("Resolved");
+                
+                $scope.ConnectedDevice_id = "";
             },
             function(error){//error
-                alert("Error: " + error);
+                
+                $scope.ConnectedDevice_id = "";
             },
             function(p){//update
                 console.log("Connected!");
