@@ -2,7 +2,6 @@ var cordovaApp = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
-
     },
     // Bind Event Listeners
     //
@@ -16,27 +15,21 @@ var cordovaApp = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        cordovaApp.receivedEvent('deviceready');
-
-        },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        
-        console.log('Received Event: ' + id);
-    }
-
-    
+        angular.element(document).ready(function(){
+            angular.bootstrap(document,['jeeputer']);
+        });
+    },
 };
 
-cordovaApp.initialize();
+
 
 var app = angular.module('jeeputer',['ngRoute'])
 app.run(function(){FastClick.attach(document.body)});
 
-app.config(function($routeProvider){
+app.config(function($routeProvider, $compileProvider){
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
     $routeProvider
-        .when('/',{
+        .when('/home',{
             templateUrl:'views/home.html',
             controller: 'homeController'
         })
@@ -52,14 +45,13 @@ app.config(function($routeProvider){
             templateUrl: 'views/virtualDevice.html'
         })
         .otherwise({
-            redirectTo:'/'
+            redirectTo:'/home'
         })
+
 });
 
-app.controller('AppController',[AppController]);
-function AppController(){
-    
-}
+app.controller('AppController',[function(){}]);
+
 
 
 

@@ -1,5 +1,5 @@
-//if(typeof ble === "undefined" || navigator.platform.match("Simulator"))
-//	{
+if(typeof ble === "undefined" || navigator.platform.match("Simulator"))
+	{
 		console.log("No bluetooth interface found; Running from debug ble service.");
 		ble = {
 			self: this,
@@ -81,7 +81,7 @@
 			}
 		}
 
-	//};
+	};
 
 app.service("$Bluetooth",function($q){
 		
