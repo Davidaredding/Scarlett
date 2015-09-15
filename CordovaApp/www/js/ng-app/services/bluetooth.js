@@ -1,4 +1,4 @@
-if(typeof ble === "undefined")
+if(typeof ble === "undefined" || navigator.platform.match("Simulator"))
 	{
 		console.log("No bluetooth interface found; Running from debug ble service.");
 		ble = {
@@ -144,11 +144,8 @@ app.service("$Bluetooth",function($q){
 		this.Write= function(device_id, value){
 			var deferred = $q.defer();
 			var a = new Uint8Array(1);
-			a[0] = 0
-			for(i=0;i<value.length;i++)
-			{
-				a[0] = (a[0]<<1)|value[i];
-			}
+			a[0] = value;
+			
 			
 
 			ble.writeCommand(

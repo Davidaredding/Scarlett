@@ -54,13 +54,13 @@
         }
     },
     "installed_plugins": {
-        "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.example.hello"
-        },
         "com.megster.cordova.ble": {
             "PACKAGE_NAME": "com.example.hello"
         },
         "cordova-plugin-splashscreen": {
+            "PACKAGE_NAME": "com.example.hello"
+        },
+        "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.example.hello"
         },
         "org.apache.cordova.dialogs": {

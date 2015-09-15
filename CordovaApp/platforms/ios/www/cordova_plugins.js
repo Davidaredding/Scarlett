@@ -33,9 +33,9 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "cordova-plugin-whitelist": "1.0.0",
     "com.megster.cordova.ble": "0.1.9",
     "cordova-plugin-splashscreen": "2.1.0",
+    "cordova-plugin-whitelist": "1.0.0",
     "org.apache.cordova.dialogs": "0.3.0",
     "org.apache.cordova.vibration": "0.3.13"
 }
