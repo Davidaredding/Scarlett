@@ -31,8 +31,10 @@ app.controller('homeController',['$scope','$Bluetooth','$interval',function($sco
         if($scope.ConnectedDevice_id != "")
         {
             console.log($scope.relayStatus);
-            $Bluetooth.Write($scope.ConnectedDevice_id, $scope.relayStatus)
-            .then(function(){},function(){});
+            $Bluetooth.Write($scope.ConnectedDevice_id, 1)
+                .then(function(){
+                    $Bluetooth.Write($scope.ConnectedDevice_id, $scope.relayStatus);
+                });
         }
         else
         {

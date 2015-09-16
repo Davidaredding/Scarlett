@@ -9,18 +9,18 @@
 SoftwareSerial hm10(14,15); // RX, TX
 
 bool CommandMode = false;
+bool ServiceMode = false;
+
 char cmdBuffer[20];
 short cmdBufferCnt = 0;
-
 
 short hm10_buffer_size = 0;
 short hm10_buffer_wait = 0;
 
+char relayStatus = 0;
 
 
-
-void setup()
-{
+void setup(){
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
   // set the data rate for the SoftwareSerial port
@@ -41,20 +41,17 @@ void setup()
   
   Serial.println("STARTED");
   //If we don't do this the BTModule may not respond after being powered down.
-  hm10.println("Time to wake up! Wake up! Time to wake up! Wake up! Time to wake up! Wake up! Time to wake up! Wake up!");
-  
-  
+  //hm10.print("Time to wake up! Wake up! Time to wake up! Wake up! Time to wake up! Wake up! Time to wake up! Wake up!");
 }
 
-
-void loop() // run over and over
+void loop()
 {
   serial_read();
-  hm10_read();
+  blueToothSerialRead();
 }
 
 void serial_read(){
-  while(Serial.available() > 0)
+  /*while(Serial.available() > 0)
   {
     char c = Serial.read();
     //Exit Command Mode
@@ -71,6 +68,12 @@ void serial_read(){
       Serial.println("Entering Command mode, Sending 'AT'");
       hm10.print("AT");
     }
+    else if(!CommandMode)
+    {
+      hm10.print(c);
+    }
+
+
 
     //Recieve Commands
     if(CommandMode)
@@ -91,67 +94,17 @@ void serial_read(){
         memset(cmdBuffer,0,20);
       }
     }
-  }
-
+  }*/
 }
 
-void hm10_read()
-{
-  bool cnt = hm10_buffer_size < hm10.available();
-  if(cnt)
-  {
-    hm10_buffer_wait = 0;    
-    hm10_buffer_size = hm10.available();
-  }
-  else if(hm10.available() > 0)
-  {
-    hm10_buffer_wait ++;
-  }
 
-  if(hm10_buffer_wait >= 3)
-  {
-      hm10_buffer_wait = 0;
-      hm10_buffer_size = 0;
-
-      if(CommandMode)
-        processCommandResponse();
-      else
-        processRegister();
-      Serial.println(" ");
-  }
-
-}
-
-void processCommandResponse()
-{
+void processCommandResponse(){
   short cnt = hm10.available();
 
   while(hm10.available() >0)
   {
     char c = hm10.read();
     Serial.print(c);
-  }
-  
-}
-
-void processRegister()
-{
-  while(hm10.available()>0)
-  {
-    char i = hm10.read();
-    Serial.print(i);
-    WriteRegister(i);
-  }
-  LatchRegister();
-}
-
-//Clocks in the data, does not latch
-void WriteRegister(char c){
-  for (int i = 0; i < 8; ++i)
-  {
-    digitalWrite(data,c&0x01);
-    PulseRegister();
-    c >>= 1;
   }
 }
 
@@ -166,12 +119,78 @@ void LatchRegister(){
 }
 
 
+typedef void (*processor)(char serialRead);
+processor currentProcessor = NULL;
+char processorBuffer[10];
+short processorBufferIndex = 0;
+
+void blueToothSerialRead()
+{
+  while(hm10.available()>0)
+  {
+    char serialRead = hm10.read();
+    Serial.print(serialRead);
+    if(currentProcessor == NULL)
+      setCurrentProcessor(serialRead);
+    else
+      currentProcessor(serialRead);
+  }
+}
+
+void setCurrentProcessor(char serialRead)
+{
+  switch(serialRead){
+    case 1:
+      Serial.print("Using Relay Processor");
+      currentProcessor = relayProcessor;
+    default:
+      Serial.print("No Processor found for " + serialRead);
+  }
+  Serial.println();
+  Serial.flush();
+}
 
 
+//Processor Template
+/*******************************************************
+ *  Used to create new processors and demonstrate the  *
+ *  pattern to follow                                  *
+ *******************************************************
+
+void ProcessorTemplate(char serialRead)
+{
+  processorBuffer[processorBufferIndex] = serialRead;
+  processorBufferIndex ++;
+  if(processorBufferIndex == [Expected bytes for this processor])
+  {
+    //Do work
+    
+    //Cleanup
+    memset(processorBuffer,0,processorBufferIndex);
+    currentProcessor = NULL;
+    processorBufferIndex = 0;
+  }
+  return;
+}
+*/
 
 
-
-
+void relayProcessor(char serialRead)
+{
+  //this processor only requires one byte of data 
+  //so we dont' need to use the buffer
+  
+  //Do work
+  for (int i = 0; i < 8; ++i)
+  {
+    digitalWrite(data,serialRead&0x01);
+    PulseRegister();
+    serialRead >>= 1;
+  }
+  LatchRegister();
+    //Cleanup
+  currentProcessor = NULL;
+}
 
 
 
