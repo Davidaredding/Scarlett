@@ -1,4 +1,16 @@
+#include <Arduino.h>
 #include <SoftwareSerial.h>
+void setup();
+void loop();
+void serial_read();
+void hm10_read();
+void processCommandResponse();
+void processRegister();
+void WriteRegister(char c);
+void PulseRegister();
+void LatchRegister();
+#line 1 "src/script.ino"
+//#include <SoftwareSerial.h>
 
 
 #define data 16 //DS pin 14
@@ -75,7 +87,6 @@ void serial_read(){
     //Recieve Commands
     if(CommandMode)
     {
-      //Use terminating characters because the normal buffering is to fast for human input
       if(c!='!')
       {
         cmdBuffer[cmdBufferCnt] = c;
