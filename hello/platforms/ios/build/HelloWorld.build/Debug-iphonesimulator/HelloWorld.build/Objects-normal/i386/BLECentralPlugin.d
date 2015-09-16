@@ -1,0 +1,26 @@
+dependencies: \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/HelloWorld/Plugins/com.megster.cordova.ble/BLECentralPlugin/BLECentralPlugin.m \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/HelloWorld/Plugins/com.megster.cordova.ble/BLECentralPlugin/BLECentralPlugin.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDV.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVAvailability.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVAvailabilityDeprecated.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVPlugin.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVPluginResult.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/NSMutableArray+QueueAdditions.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVCommandDelegate.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVInvokedUrlCommand.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVViewController.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVCommandQueue.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVWhitelist.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVScreenOrientationDelegate.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVURLProtocol.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVDebug.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVLocalStorage.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVTimer.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/NSArray+Comparisons.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/NSData+Base64.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/NSDictionary+Extensions.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/UIDevice+Extensions.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/build/emulator/include/Cordova/CDVJSON.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/HelloWorld/Plugins/com.megster.cordova.ble/BLECentralPlugin/Foo.h \
+  /Users/David/Code/Scarlett/CordovaApp/platforms/ios/HelloWorld/Plugins/com.megster.cordova.ble/BLECentralPlugin/CBPeripheral+Extensions.h

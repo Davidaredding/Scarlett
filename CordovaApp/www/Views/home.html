@@ -1,0 +1,83 @@
+<style>
+    @-webkit-keyframes scanningAnimation /* Safari and Chrome */
+    {
+        0%   {box-shadow: 0 0 .5em rgba(0,255,255,.25); border-color: #005;}
+        50%  {box-shadow: 0 0 1em rgba(0,255,255,1); border-color: #0FF}
+        100% {box-shadow: 0 0 .5em rgba(0,255,255,.25); border-color:#005;}
+    }
+
+    .scanning 
+    {
+        -webkit-animation:scanningAnimation 1s infinite; /* Safari and Chrome */
+    }
+
+</style>
+
+
+
+<div class="container-fluid" >
+    <div class="row">
+        <div class="col-xs-12 col-sm-8">
+            <h3 class="text-center">Relay Prototype </h3>
+            <div class="row">
+
+                <div class="col-xs-12">
+                    <button 
+                        ng-if="!scanning && BlueToothDevices.length<=0"
+                        class="btn btn-relay" 
+                        ng-click="FindDevices()">
+                            Scan
+                    </button>
+                    <button 
+                        ng-if="!scanning && BlueToothDevices.length>0 && ConnectedDevice_id == ''"
+                        class="btn btn-relay container-fluid" 
+                        ng-click="Connect(BlueToothDevices[0].ID)">
+                        <div class="row" style="line-height:.75em; font-size:.75em; margin-top:10px">
+                            <div class="col-xs-12">Connect To:</div>
+                        </div>
+                        <div class="row" style="line-height:4em">
+                            <div class="col-xs-12">{{BlueToothDevices[0].Name}}</div>
+                        </div>
+                    </button>
+                    <span ng-if="scanning" class="btn btn-relay scanning" style="
+                        color:rgba(0, 255, 255, 1);
+                        border-color: #0FF !important;
+                        box-shadow: 0 0 0.5em rgba(0,255,255,0.5) !important;"
+                        >
+                            <i class="fa fa-spinner fa-pulse fa-3x" style=""></i>
+                            <span>Scanning ...</span>
+                    </span>
+                    <span ng-if="ConnectedDevice_id!=''" 
+                        style="
+                            color:rgba(0, 255, 255, 0.5); 
+                            position: absolute; 
+                            top: -40px; 
+                            text-align-center; 
+                            width: 100%;
+                            text-shadow: 0 0 15px;
+                            ">
+                        Connected to : {{BlueToothDevices[0].Name}}
+                    </span>
+                </div>
+
+                <div ng-if="ConnectedDevice_id!=''" ng-repeat="dev in buttonStatus track by $index">
+                    <div class="col-xs-6 col-sm-4 col-md-3">
+                        <input type="checkbox" class="btn btn-relay" id="device_{{$index}}" name="device_{{$index}}" 
+                            ng-model="dev.Status" ng-true-value="1" ng-false-value="0" ng-change="statusChanged(dev)">
+                            <label for="device_{{$index}}">{{dev.Name}}</label>
+                        </input>
+                    </div>
+                    
+                </div>
+    
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- End Content -->
+    
+<script src="//localhost:4020/livereload.js"></script>
+
+
