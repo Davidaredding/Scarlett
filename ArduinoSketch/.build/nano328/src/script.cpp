@@ -1,4 +1,16 @@
+#include <Arduino.h>
 #include <SoftwareSerial.h>
+void setup();
+void loop();
+void serial_read();
+void processCommandResponse();
+void PulseRegister();
+void LatchRegister();
+void blueToothSerialRead();
+void setCurrentProcessor(char serialRead);
+void relayProcessor(char serialRead);
+#line 1 "src/script.ino"
+//#include <SoftwareSerial.h>
 
 
 #define data 16 //DS pin 14
