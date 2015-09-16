@@ -51,7 +51,7 @@ void loop()
 }
 
 void serial_read(){
-  /*while(Serial.available() > 0)
+  while(Serial.available() > 0)
   {
     char c = Serial.read();
     //Exit Command Mode
@@ -89,12 +89,12 @@ void serial_read(){
       {
         hm10.print(cmdBuffer);
         cmdBufferCnt = 0;
-        Serial.print("\r\nCmd Sent");
+        Serial.print("\r\nCmd Sent: ");
         Serial.println(cmdBuffer);
         memset(cmdBuffer,0,20);
       }
     }
-  }*/
+  }
 }
 
 
@@ -119,9 +119,10 @@ void LatchRegister(){
 }
 
 
-typedef void (*processor)(char serialRead);
-processor currentProcessor = NULL;
-char processorBuffer[10];
+void (* processor_ptr)(char s);
+
+
+char processorBuffer[24];
 short processorBufferIndex = 0;
 
 void blueToothSerialRead()
@@ -129,30 +130,57 @@ void blueToothSerialRead()
   while(hm10.available()>0)
   {
     char serialRead = hm10.read();
-    Serial.print(serialRead);
-    if(currentProcessor == NULL)
+    if(CommandMode)
+    {
+      Serial.print(serialRead);
+      continue;
+    }
+    
+    if(processor_ptr == 0)
       setCurrentProcessor(serialRead);
     else
-      currentProcessor(serialRead);
+      processor_ptr(serialRead);
+
   }
 }
 
 void setCurrentProcessor(char serialRead)
 {
-  switch(serialRead){
-    case 1:
-      Serial.print("Using Relay Processor");
-      currentProcessor = relayProcessor;
-    default:
-      Serial.print("No Processor found for " + serialRead);
-  }
-  Serial.println();
-  Serial.flush();
+    if(serialRead == 1){
+      Serial.println("Using Relay Processor");
+      processor_ptr = &relayProcessor;
+    }
+    else{
+      Serial.println("No Processor found");
+    }
+  
+  
 }
 
 
-//Processor Template
-/*******************************************************
+void relayProcessor(char serialRead)
+{
+  //this processor only requires one byte of data 
+  //so we dont' need to use the buffer
+  Serial.println("Relay Processor working ...");
+  //Do work
+  
+  for (int i = 0; i < 8; ++i)
+  {
+    digitalWrite(data,serialRead & 0x01);
+    PulseRegister();
+    serialRead >>= 1;
+  }
+  LatchRegister();
+    //Cleanup
+  processor_ptr = 0;
+}
+
+
+
+
+
+/**************** Processor Template *******************
  *  Used to create new processors and demonstrate the  *
  *  pattern to follow                                  *
  *******************************************************
@@ -174,23 +202,6 @@ void ProcessorTemplate(char serialRead)
 }
 */
 
-
-void relayProcessor(char serialRead)
-{
-  //this processor only requires one byte of data 
-  //so we dont' need to use the buffer
-  
-  //Do work
-  for (int i = 0; i < 8; ++i)
-  {
-    digitalWrite(data,serialRead&0x01);
-    PulseRegister();
-    serialRead >>= 1;
-  }
-  LatchRegister();
-    //Cleanup
-  currentProcessor = NULL;
-}
 
 
 
