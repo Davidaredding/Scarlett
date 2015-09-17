@@ -8,7 +8,11 @@ var cordovaApp = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+
+        if(navigator.userAgent.match(/(iPhone|iPod|iPad|Android)/))
+            document.addEventListener('deviceready', this.onDeviceReady, false);
+        else
+            this.onDeviceReady();
     },
     // deviceready Event Handler
     //
@@ -33,17 +37,10 @@ app.config(function($routeProvider, $compileProvider){
             templateUrl:'views/home.html',
             controller: 'homeController'
         })
-        .when('/settings/devices',{
-            templateUrl: 'views/devices.html'
+        .when('/button/',{
+            templateUrl: 'views/addAButton.html'
         })
-        .when('/settings/VirtualDevices',
-        {
-            templateUrl: 'views/virtualDevices.html'
-        })
-        .when('/settings/VirtualDevices/:vdId',
-        {
-            templateUrl: 'views/virtualDevice.html'
-        })
+        
         .otherwise({
             redirectTo:'/home'
         })

@@ -14,7 +14,6 @@
 </style>
 
 
-
 <div class="container-fluid" >
     <div class="row">
         <div class="col-xs-12 col-sm-8">
@@ -60,10 +59,12 @@
                     </span>
                 </div>
 
-                <div ng-if="ConnectedDevice_id!=''" ng-repeat="dev in buttonStatus track by $index">
+                <div ng-if="ConnectedDevice_id!=''" ng-repeat="dev in buttons track by $index">
                     <div class="col-xs-6 col-sm-4 col-md-3">
-                        <input type="checkbox" class="btn btn-relay" id="device_{{$index}}" name="device_{{$index}}" 
-                            ng-model="dev.Status" ng-true-value="1" ng-false-value="0" ng-change="statusChanged(dev)">
+                        <input type="checkbox" class="btn btn-relay " 
+                                id="device_{{$index}}" name="device_{{$index}}" 
+                                ng-model="dev.Status" ng-true-value="true" ng-false-value="false" 
+                                ng-change="statusChanged($index)" >
                             <label for="device_{{$index}}">{{dev.Name}}</label>
                         </input>
                     </div>

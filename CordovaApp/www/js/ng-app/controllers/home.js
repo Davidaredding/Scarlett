@@ -1,28 +1,18 @@
-app.controller('homeController',['$scope','$Bluetooth','$interval',function($scope,$Bluetooth,$interval)
+app.controller('homeController',['$scope','$Bluetooth','$Buttons','$interval',function($scope,$Bluetooth,$Buttons,$interval)
 {
     $scope.BlueToothDevices = [];
-    $scope.relayStatus = 0;
     $scope.ConnectedDevice_id = "";
-    $scope.buttonStatus = 
-    [
-        {Name: "Fog Lights", Status: 0, onAction :function(){$scope.relayStatus |= 192;}, offAction:function(){$scope.relayStatus ^= 192; }},
-        {Name: "Spot Lights", Status: 0, onAction :function(){$scope.relayStatus |= 48;}, offAction:function(){$scope.relayStatus ^= 48;}},
-        {Name: "3", Status: 0, onAction :function(){}, offAction:function(){}},
-        {Name: "4", Status: 0, onAction :function(){}, offAction:function(){}}
-        
-    ];
+    $scope.buttons = $Buttons.buttons;
 
     //Status
     console.log('running!');
     $scope.scanning = false;
     $scope.connecting = false;
 
-    //statusChanged is called AFTER the status has changed.
-    $scope.statusChanged = function(dev){
-        if(!dev.Status)
-            dev.offAction();
-        else
-            dev.onAction();
+    $scope.statusChanged = function(dev_index){
+        var dev = $scope.buttons[dev_index];
+        dev.Status = !dev.Status;
+        $Buttons.ToggleButton(dev);
 
         $scope.writeStatus();
     }
@@ -33,7 +23,7 @@ app.controller('homeController',['$scope','$Bluetooth','$interval',function($sco
             console.log($scope.relayStatus);
             $Bluetooth.Write($scope.ConnectedDevice_id, 1)
                 .then(function(){
-                    $Bluetooth.Write($scope.ConnectedDevice_id, $scope.relayStatus);
+                    $Bluetooth.Write($scope.ConnectedDevice_id, $Buttons.RelayStatus);
                 });
         }
         else
@@ -65,20 +55,5 @@ app.controller('homeController',['$scope','$Bluetooth','$interval',function($sco
                 console.log("Connected!");
                 $scope.ConnectedDevice_id = p.id;
             });
-    }
-
-    $scope.remote_animate = function(){
-        var index = 7;
-        $scope.status = [1,1,1,1,1,1,1,1];
-        $interval(
-            function(){
-
-                $scope.status[index--] = 1;
-                if(index<0)
-                    index = 7;
-                $scope.status[index] = 0;
-                $scope.processStatus();
-            },
-        100);
     }
 }]);

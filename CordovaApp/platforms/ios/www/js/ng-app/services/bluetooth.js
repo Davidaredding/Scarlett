@@ -36,9 +36,8 @@ if(typeof ble === "undefined" || navigator.platform.match("Simulator"))
 				
 			},
 			disconnect: function(device_id,success,error){console.error("Disconnect is not implemented yet.")},
-			writeCommand: function(device_id,service,characteristic,buffer,success,error)
+			writeWithoutResponse: function(device_id,service,characteristic,buffer,success,error)
 			{
-				console.log('writing...');
 				setTimeout(success,0);
 			},
 			Peripheral_Mock: function(connected)
@@ -86,7 +85,8 @@ if(typeof ble === "undefined" || navigator.platform.match("Simulator"))
 app.service("$Bluetooth",function($q){
 		
 		this.Scanning=false;
-
+		this.service = "FFE0";
+		this.characteristic = "FFE1";
 		this.ScanForPeripherals = function()
 		{
 			var deferred = $q.defer();
@@ -143,15 +143,14 @@ app.service("$Bluetooth",function($q){
 
 		this.Write= function(device_id, value){
 			var deferred = $q.defer();
+			console.log("writing " + value);
 			var a = new Uint8Array(1);
 			a[0] = value;
-			
-			
 
-			ble.writeCommand(
+			ble.writeWithoutResponse(
 				device_id, 
-				'FFE0', 
-				'FFE1',
+				this.service, 
+				this.characteristic,
 				a.buffer,
 				function(a){deferred.resolve();},
 				function(a){deferred.fail();});
