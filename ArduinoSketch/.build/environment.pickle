@@ -45,7 +45,7 @@ p22
 tp23
 a(S'build_dir'
 p24
-S'.build/uno'
+S'.build/nano328'
 p25
 tp26
 a(S'avrdude'
@@ -69,13 +69,13 @@ sS'obj'
 p37
 S'%s.o'
 p38
-sS'deps'
-p39
-S'%s.d'
-p40
 sS'lib'
-p41
+p39
 S'lib%s.a'
+p40
+sS'deps'
+p41
+S'%s.d'
 p42
 stp43
 a(S'ldflags'

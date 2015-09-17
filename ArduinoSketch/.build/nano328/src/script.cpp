@@ -11,8 +11,8 @@ void all_relay_Processor(char serialRead);
 void individual_relay_processor(char serialRead);
 void processorCleanup();
 void toggleRelay(short relayMask);
-void turnRelayOn(char relayMask);
-void turnRelayOff(char relayMask);
+void turnRelayOn(short relayMask);
+void turnRelayOff(short relayMask);
 void WriteRelays();
 void PulseRegister();
 void LatchRegister();
@@ -151,7 +151,7 @@ void blueToothSerialRead(){
 
 void setProcessor(char serialRead){
     if(serialRead == 1){
-      Serial.println("Using Relay Processor");
+      Serial.println("Using All Relay Processor");
       processor_ptr = &all_relay_Processor;
     }
     if(serialRead == 'I'){
@@ -200,10 +200,10 @@ void individual_relay_processor(char serialRead)
           toggleRelay(val);
           break;
         case 'O':
-          //turnRelayOn(val);
+          turnRelayOn(val);
           break;
         case 'X':
-          //turnRelayOff(val);
+          turnRelayOff(val);
           break;
         default :
           Serial.println("Could not find a method with given input.");
@@ -225,25 +225,20 @@ void processorCleanup()
 }
 void toggleRelay(short relayMask)
 {
-  Serial.println(relayMask,BIN);
-
   relayStatus = relayStatus ^ relayMask;
-  
-  Serial.println(relayStatus, BIN);
 }
 
-void turnRelayOn(char relayMask)
+void turnRelayOn(short relayMask)
 {
   relayStatus = relayStatus | relayMask;
 }
 
-void turnRelayOff(char relayMask)
+void turnRelayOff(short relayMask)
 {
   relayStatus = relayStatus & (~relayMask);
 }
 
-void WriteRelays()
-{
+void WriteRelays(){
   char temp = relayStatus;
   for (int i = 0; i < 8; ++i)
   {
@@ -268,10 +263,8 @@ void LatchRegister(){
  *  Used to create new processors and demonstrate the  *
  *  pattern to follow                                  *
  *******************************************************
-
-void ProcessorTemplate(char serialRead)
-{
-   processor_Buffer[processor_Buffer_Index] = serialRead;
+void ProcessorTemplate(char serialRead){
+  processor_Buffer[processor_Buffer_Index] = serialRead;
   processor_Buffer_Index ++;
   if(processor_Buffer_Index == 2)
   {
