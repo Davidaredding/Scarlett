@@ -36,9 +36,8 @@ if(typeof ble === "undefined" || navigator.platform.match("Simulator"))
 				
 			},
 			disconnect: function(device_id,success,error){console.error("Disconnect is not implemented yet.")},
-			writeCommand: function(device_id,service,characteristic,buffer,success,error)
+			writeWithoutResponse: function(device_id,service,characteristic,buffer,success,error)
 			{
-				console.log('writing...');
 				setTimeout(success,0);
 			},
 			Peripheral_Mock: function(connected)
