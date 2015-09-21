@@ -8,10 +8,13 @@ app.factory('ButtonModel',[function(){
 		setData: function(buttonData){
 			angular.extend(this,buttonData);
 		},
+		ID: 0,
 		Name: "Un-Named",
 		Status: 0,
-		onAction :function(){console.log("On");},
-		offAction:function(){console.log("Off");}
+		onMask: 0,
+		offMask:0,
+		onAction :function(RelaysState){return RelaysState |= this.onMask},
+		offAction:function(RelaysState){return RelaysState ^= this.offMask}
 	}
 	return Button;
 }]);

@@ -54,7 +54,7 @@
         }
     },
     "installed_plugins": {
-        "com.megster.cordova.ble": {
+        "cordova-plugin-ble-central": {
             "PACKAGE_NAME": "com.example.hello"
         },
         "cordova-plugin-splashscreen": {
