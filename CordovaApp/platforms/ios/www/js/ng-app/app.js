@@ -23,7 +23,7 @@ var cordovaApp = {
             angular.bootstrap(document,['jeeputer']);
         });
 
-        if((typeof ble === "undefined") || navigator.platform.match("Simulator"))
+        //if((typeof ble === "undefined") || navigator.platform.match("Simulator"))
             createMockBle();
     },
 };
