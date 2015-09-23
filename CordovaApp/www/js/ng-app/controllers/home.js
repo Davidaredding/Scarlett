@@ -1,9 +1,8 @@
 app.controller('homeController',['$scope','$Bluetooth','$Buttons','$interval',function($scope,$Bluetooth,$Buttons,$interval)
 {
-    $scope.BlueToothDevices = [];
-    $scope.ConnectedDevice_id = "";
+    $scope.BlueToothDevices = $Bluetooth.devices;
     $scope.buttons = $Buttons.buttons;
-
+    $scope.connected = $Bluetooth.connectedDevice;
     //Status
     console.log('running!');
     $scope.scanning = false;
@@ -18,42 +17,34 @@ app.controller('homeController',['$scope','$Bluetooth','$Buttons','$interval',fu
     }
 
     $scope.writeStatus = function(){
-        if($scope.ConnectedDevice_id != "")
-        {
-            console.log($scope.relayStatus);
-            $Bluetooth.Write($scope.ConnectedDevice_id, 1)
-                .then(function(){
-                    $Bluetooth.Write($scope.ConnectedDevice_id, $Buttons.RelayStatus);
-                });
-        }
-        else
-        {
-            console.log("no connected device");
-        }
+        $Bluetooth.Write(1)
+            .then(function(){
+                $Bluetooth.Write($Buttons.RelayStatus);
+            });
+
     }
 
     $scope.FindDevices = function(){
         
         $scope.scanning = true;
         $Bluetooth.ScanForPeripherals()
-            .then(function(devices){
-                $scope.BlueToothDevices = devices;
+            .then(function(){
                 $scope.scanning = false;
+                $scope.BlueToothDevices = $Bluetooth.devices;
             });
     }
 
     $scope.Connect = function(id){
         $Bluetooth.ConnectToPeripheral(id)
-            .then(
-            function(){//resolved
-                $scope.ConnectedDevice_id = "";
-            },
+            .then(function(){},
             function(error){//error
-                $scope.ConnectedDevice_id = "";
+                conosle.log(error);
+                $scope.connected = undefined;
+                $scope.devices = [];  
             },
             function(p){//update
-                console.log("Connected!");
-                $scope.ConnectedDevice_id = p.id;
+                console.log("Connected to " + p);
+                $scope.connected = p;
             });
     }
 }]);

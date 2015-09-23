@@ -30,7 +30,8 @@
 <body  ng-controller="AppController as app">
     <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <h2>Switch Free</h2>
+        <h2 style="display:inline-block">Switch Free</h2>
+        <h3 style="display:inline-block; float:right"><a href="#/button">Edit Buttons</a></h3>
     </div>
 </nav>
     <div id="main">
@@ -41,12 +42,15 @@
 <script src="cordova.js"></script>
 <script src="js/node_modules/angular/angular.min.js"></script>
 <script src="js/node_modules/angular-route/angular-route.min.js"></script>
+<!--https://github.com/angular/angular.js/issues/12241  Looks like a webkit issue, this works around it for ios9-->
+<script src="js/ios9-browser-fix.js"></script>
 <script src="js/fastclick.js"></script>
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
 <script src="js/ng-app/app.js"></script> 
 <script src="js/ng-app/controllers/home.js"></script>
+<script src="js/ng-app/controllers/button.js"></script>
 
 <script src="js/ng-app/models/button.js"></script>
 <script src="js/ng-app/services/bluetooth.js"></script>
