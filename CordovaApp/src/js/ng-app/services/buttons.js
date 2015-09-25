@@ -1,4 +1,4 @@
-app.service("$Buttons",['ButtonModel',function(button){
+app.service("ButtonService",['ButtonModel',function(button){
 	var Service = {};
 	
 	Service.RelayStatus = 0;

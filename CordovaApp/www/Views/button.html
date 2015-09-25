@@ -56,14 +56,14 @@
 
 </style>
 
-<div class="container-fluid">
+<div class="container-fluid" ng-controller="buttonController as ButtonController">
 	<div class="row buttonRow">
 		<div class="col-xs-3 col-sm-4"></div>
 		<div class="col-xs-6 col-sm-4 col-md-3">
 			<input type="checkbox" class="btn btn-relay" 
                     id="targetButton" name="targetButton" 
                     checked disabled>
-                <label for="targetButton" id="btnLabel">{{buttonName}}</label>
+                <label for="targetButton" id="btnLabel">{{ButtonController.buttonName}}</label>
             </input>
 		</div>
 		<div class="col-xs-3 col-sm-4"></div>
@@ -79,45 +79,44 @@
 
 	<div class="row buttonToggles">
 		<div class="container">
-			<div class="row">
-				
+			<div class="row">				
 				<div class="col-xs-3" > 
-					<div class="maskIndicator" ng-click="ToggleMask(1)" ng-class="{active: IsActive(1)}">1</div>
+					<div class="maskIndicator" ng-click="ButtonController.ToggleMask(1)" ng-class="{active: ButtonController.IsActive(1)}">1</div>
 				</div>
 				<div class="col-xs-3" > 
-					<div class="maskIndicator" ng-click="ToggleMask(2)" ng-class="{active: IsActive(2)}">2</div>
+					<div class="maskIndicator" ng-click="ButtonController.ToggleMask(2)" ng-class="{active: ButtonController.IsActive(2)}">2</div>
 				</div>
 				<div class="col-xs-3" > 
-					<div class="maskIndicator" ng-click="ToggleMask(4)" ng-class="{active: IsActive(4)}">3</div>
+					<div class="maskIndicator" ng-click="ButtonController.ToggleMask(4)" ng-class="{active: ButtonController.IsActive(4)}">3</div>
 				</div>
 				<div class="col-xs-3" > 
-					<div class="maskIndicator" ng-click="ToggleMask(8)" ng-class="{active: IsActive(8)}">4</div>
+					<div class="maskIndicator" ng-click="ButtonController.ToggleMask(8)" ng-class="{active: ButtonController.IsActive(8)}">4</div>
 				</div>
 			</div>
 		</div>
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-3" > 
-					<div class="maskIndicator" ng-click="ToggleMask(16)" ng-class="{active: IsActive(16)}">5</div>
+					<div class="maskIndicator" ng-click="ButtonController.ToggleMask(16)" ng-class="{active: ButtonController.IsActive(16)}">5</div>
 				</div>
 				<div class="col-xs-3" > 
-					<div class="maskIndicator" ng-click="ToggleMask(32)" ng-class="{active: IsActive(32)}">6</div>
+					<div class="maskIndicator" ng-click="ButtonController.ToggleMask(32)" ng-class="{active: ButtonController.IsActive(32)}">6</div>
 				</div>
 				<div class="col-xs-3" > 
-					<div class="maskIndicator" ng-click="ToggleMask(64)" ng-class="{active: IsActive(64)}">7</div>
+					<div class="maskIndicator" ng-click="ButtonController.ToggleMask(64)" ng-class="{active: ButtonController.IsActive(64)}">7</div>
 				</div>
 				<div class="col-xs-3" > 
-					<div class="maskIndicator" ng-click="ToggleMask(128)" ng-class="{active: IsActive(128)}">8</div>
+					<div class="maskIndicator" ng-click="ButtonController.ToggleMask(128)" ng-class="{active: ButtonController.IsActive(128)}">8</div>
 				</div>
 			</div>
 		</div>		
 	</div>
 	<div class="row">
 		<div class="col-xs-6">
-			<input type="button" class="btn btnTest" value="Test" ng-click="Test()" />
+			<input type="button" class="btn btnTest" value="Test" ng-click="ButtonController.Test()" />
 		</div>
 		<div class="col-xs-6">
-			<input type="button" class="btn btnTest" value="Save" ng-click="Save()" />
+			<input type="button" class="btn btnTest" value="Save" ng-click="ButtonController.Save()" />
 		</div>
 	</div>
 </div>

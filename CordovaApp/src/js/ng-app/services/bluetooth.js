@@ -81,14 +81,15 @@ function createMockBle(){
 		}
 }
 
-app.service("$Bluetooth",function($q){
+app.service("BluetoothService",function($q){
 		
 		self = this;
 		this.Scanning=false;
 		this.service = "FFE0";
 		this.characteristic = "FFE1";
 		this.connectedDevice;
-		this.devices = []
+		this.devices = [];
+		this.IsConnected = false;
 		
 
 		this.ScanForPeripherals = function()
@@ -98,10 +99,10 @@ app.service("$Bluetooth",function($q){
 			
 			setTimeout(ble.stopScan,
 				3000,
-				function(){deferred.resolve();},
+				function(){self.Scanning = false; deferred.resolve();},
 				function(){}
 				);
-
+			this.Scanning = true;
 			ble.startScan(['FFE0'],
 				function(bt_device){
 					var d = {
@@ -116,6 +117,7 @@ app.service("$Bluetooth",function($q){
 				function(error){
 					console.error(error);
 					deferred.fail(error);
+					self.Scanning = false;
 				}
 			);
 			return deferred.promise;
@@ -130,10 +132,12 @@ app.service("$Bluetooth",function($q){
 					{
 						deferred.notify(peripheral);
 						self.connectedDevice = peripheral;
+						self.IsConnected = true;
 					},
 					function(error)
 					{
 						alert("Fail!");
+						self.IsConnected = false;
 						deferred.reject(error);
 					}
 				);

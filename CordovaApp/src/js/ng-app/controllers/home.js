@@ -1,50 +1,46 @@
-app.controller('homeController',['$scope','$Bluetooth','$Buttons','$interval',function($scope,$Bluetooth,$Buttons,$interval)
+app.controller('homeController',function(BluetoothService,ButtonService)
 {
-    $scope.BlueToothDevices = $Bluetooth.devices;
-    $scope.buttons = $Buttons.buttons;
-    $scope.connected = $Bluetooth.connectedDevice;
+    this.BTService = BluetoothService;
+    this.ButtonService = ButtonService;
+    this.connected = this.BTService.connectedDevice;
     //Status
     console.log('running!');
-    $scope.scanning = false;
-    $scope.connecting = false;
+    this.scanning = false;
+    this.connecting = false;
 
-    $scope.statusChanged = function(dev_index){
-        var dev = $scope.buttons[dev_index];
+    this.statusChanged = function(dev_index){
+        var dev = this.ButtonService.buttons[dev_index];
         dev.Status = !dev.Status;
-        $Buttons.ToggleButton(dev);
+        this.ButtonService.ToggleButton(dev);
 
-        $scope.writeStatus();
+        this.writeStatus();
     }
 
-    $scope.writeStatus = function(){
-        $Bluetooth.Write(1)
+    this.writeStatus = function(){
+        var self = this;
+        this.BTService.Write(1)
             .then(function(){
-                $Bluetooth.Write($Buttons.RelayStatus);
+                self.BTService.Write(self.ButtonService.RelayStatus);
             });
 
     }
 
-    $scope.FindDevices = function(){
-        
-        $scope.scanning = true;
-        $Bluetooth.ScanForPeripherals()
-            .then(function(){
-                $scope.scanning = false;
-                $scope.BlueToothDevices = $Bluetooth.devices;
-            });
+    this.FindDevices = function(){
+        this.BTService.ScanForPeripherals()
+            .then(function(){});
     }
 
-    $scope.Connect = function(id){
-        $Bluetooth.ConnectToPeripheral(id)
+    this.Connect = function(id){
+        this.BTService.ConnectToPeripheral(id)
             .then(function(){},
             function(error){//error
                 conosle.log(error);
-                $scope.connected = undefined;
-                $scope.devices = [];  
+                this.connected = undefined;
+                this.devices = [];  
             },
             function(p){//update
                 console.log("Connected to " + p);
-                $scope.connected = p;
+                this.connected = p;
             });
     }
-}]);
+});

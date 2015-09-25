@@ -37,16 +37,15 @@ app.config(function($routeProvider, $compileProvider){
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel):/);
     $routeProvider
         .when('/home',{
-            templateUrl:'views/home.html',
-            controller: 'homeController'
+            templateUrl:'views/home.html'
         })
         .when('/button/:id',{
             templateUrl: 'views/button.html',
-            controller: 'buttonController'
+            controllerAs: 'buttonController as ButtonController'
         })
         .when('/button',{
-            templateUrl: 'views/Buttons.html',
-            controller: 'buttonController'
+            templateUrl: 'views/Buttons.html'
+            
         })
         
         .otherwise({

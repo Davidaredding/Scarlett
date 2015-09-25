@@ -14,7 +14,7 @@
 </style>
 
 
-<div class="container-fluid" >
+<div class="container-fluid" ng-controller="homeController as home">
     <div class="row">
         <div class="col-xs-12 col-sm-8">
             <h3 class="text-center">Relay Prototype </h3>
@@ -22,31 +22,30 @@
 
                 <div class="col-xs-12">
                     <button 
-                        ng-if="!scanning && BlueToothDevices.length<=0"
+                        ng-if="!home.BTService.Scanning && home.BTService.devices.length<=0"
                         class="btn btn-relay" 
-                        ng-click="FindDevices()">
+                        ng-click="home.FindDevices()">
                             Scan
                     </button>
                     <button 
-                        ng-if="!scanning && BlueToothDevices.length>0 && !connected"
+                        ng-if="!home.BTService.Scanning && home.BTService.devices.length>0 && !home.BTService.IsConnected"
                         class="btn btn-relay container-fluid" 
-                        ng-click="Connect(BlueToothDevices[0].ID)">
+                        ng-click="home.Connect(home.BTService.devices[0].ID)">
                         <div class="row" style="line-height:.75em; font-size:.75em; margin-top:10px">
                             <div class="col-xs-12">Connect To:</div>
                         </div>
                         <div class="row" style="line-height:4em">
-                            <div class="col-xs-12">{{BlueToothDevices[0].Name}}</div>
+                            <div class="col-xs-12">{{home.BTService.devices[0].Name}}</div>
                         </div>
                     </button>
-                    <span ng-if="scanning" class="btn btn-relay scanning" style="
+                    <span ng-if="home.BTService.Scanning" class="btn btn-relay scanning" style="
                         color:rgba(0, 255, 255, 1);
                         border-color: #0FF !important;
-                        box-shadow: 0 0 0.5em rgba(0,255,255,0.5) !important;"
-                        >
+                        box-shadow: 0 0 0.5em rgba(0,255,255,0.5) !important;">
                             <i class="fa fa-spinner fa-pulse fa-3x" style=""></i>
                             <span>Scanning ...</span>
                     </span>
-                    <span ng-if="connected" 
+                    <span ng-if="this.BTService.IsConnected" 
                         style="
                             color:rgba(0, 255, 255, 0.5); 
                             position: absolute; 
@@ -55,16 +54,16 @@
                             width: 100%;
                             text-shadow: 0 0 15px;
                             ">
-                        Connected to : {{connected.name}}
+                        Connected to : {{home.BTService.connectedDevice.name}}
                     </span>
                 </div>
 
-                <div ng-if="connected" ng-repeat="dev in buttons track by $index">
+                <div ng-if="home.BTService.IsConnected" ng-repeat="dev in home.ButtonService.buttons track by $index">
                     <div class="col-xs-6 col-sm-4 col-md-3">
                         <input type="checkbox" class="btn btn-relay " 
                                 id="device_{{$index}}" name="device_{{$index}}" 
                                 ng-model="dev.Status" ng-true-value="true" ng-false-value="false" 
-                                ng-change="statusChanged($index)" >
+                                ng-change="home.statusChanged($index)" >
                             <label for="device_{{$index}}">{{dev.Name}}</label>
                         </input>
                     </div>
@@ -79,6 +78,6 @@
 
 <!-- End Content -->
     
-<script src="//localhost:4020/livereload.js"></script>
+
 
 

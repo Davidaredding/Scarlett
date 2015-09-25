@@ -15,9 +15,9 @@
 	}
 </style>
 
-<div>
+<div ng-controller="buttonController as ButtonController">
 	<div class="list-group">
-		<a href="#/button/{{$index}}" class="list-group-item" ng-repeat="button in buttons track by $index">
+		<a href="#/button/{{$index}}" class="list-group-item" ng-repeat="button in ButtonController.ButtonService.buttons track by $index">
 			{{button.Name}}
 		</a>
 	</div>
