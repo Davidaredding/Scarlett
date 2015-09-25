@@ -6,13 +6,9 @@
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
 
-    <!-- <link rel="stylesheet" type="text/css" href="css/index.css"> -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" >
-    <link href="css/main.css" rel="stylesheet" type="text/css">
-    <link href="css/font-awesome-4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    
-    
-
+    <!-- inject:css -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- endinject -->    
 
   <meta charset="utf-8">
   <title>Scarlett</title>
@@ -30,31 +26,19 @@
 <body  ng-controller="AppController as app">
     <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <h2 style="display:inline-block">Switch Free</h2>
-        <h3 style="display:inline-block; float:right"><a href="#/button">Edit Buttons</a></h3>
+        <h2>Switch Free</h2>
     </div>
 </nav>
     <div id="main">
         <div ng-view></div>
     </div>
     
-<!--<script src="//localhost:4020/livereload.js"></script>-->
-<script src="cordova.js"></script>
-<script src="js/node_modules/angular/angular.min.js"></script>
-<script src="js/node_modules/angular-route/angular-route.min.js"></script>
-<!--https://github.com/angular/angular.js/issues/12241  Looks like a webkit issue, this works around it for ios9-->
-<script src="js/ios9-browser-fix.js"></script>
-<script src="js/fastclick.js"></script>
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="cordova.js"></script>    
+<!-- inject:js -->
 
-<script src="js/ng-app/app.js"></script> 
-<script src="js/ng-app/controllers/home.js"></script>
-<script src="js/ng-app/controllers/button.js"></script>
+<script src="js/scripts.min.js"></script>
 
-<script src="js/ng-app/models/button.js"></script>
-<script src="js/ng-app/services/bluetooth.js"></script>
-<script src="js/ng-app/services/buttons.js"></script>
+<!-- endinject -->
 <script>
     cordovaApp.initialize();
 </script>
