@@ -22,6 +22,9 @@ var cordovaApp = {
         angular.element(document).ready(function(){
             angular.bootstrap(document,['jeeputer']);
         });
+
+        if((typeof ble === "undefined") || navigator.platform.match("Simulator"))
+            createMockBle();
     },
 };
 
@@ -37,8 +40,13 @@ app.config(function($routeProvider, $compileProvider){
             templateUrl:'views/home.html',
             controller: 'homeController'
         })
-        .when('/button/',{
-            templateUrl: 'views/addAButton.html'
+        .when('/button/:id',{
+            templateUrl: 'views/button.html',
+            controller: 'buttonController'
+        })
+        .when('/button',{
+            templateUrl: 'views/Buttons.html',
+            controller: 'buttonController'
         })
         
         .otherwise({
