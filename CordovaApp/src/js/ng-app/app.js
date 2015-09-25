@@ -41,11 +41,9 @@ app.config(function($routeProvider, $compileProvider){
         })
         .when('/button/:id',{
             templateUrl: 'views/button.html',
-            controllerAs: 'buttonController as ButtonController'
         })
         .when('/button',{
             templateUrl: 'views/Buttons.html'
-            
         })
         
         .otherwise({
