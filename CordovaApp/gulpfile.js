@@ -23,12 +23,19 @@ gulp.task('serve', function(){
 	var sources = gulp.src([
 		'./src/css/*.css', 
 		'./src/css/font-awesome-4.4.0/css/font-awesome.min.css',
-		'./src/js/*.js',
-		'./src/js/ng-app/**/*.js',
-		'./src/js/node_modules/angular/angular.min.js',
-		'./src/js/node_modules/angular-route/angular-route.min.js'
+	  	'./src/js/node_modules/angular/angular.min.js',
+	  	'./src/js/node_modules/angular-route/angular-route.min.js',
+	  	'./src/js/ios9-browser-fix.js',
+		'./src/js/fastclick.js',
+		'./src/js/jquery.min.js',
+		'./src/js/bootstrap.min.js',
+	  	'./src/js/ng-app/app.js',
+	  	'./src/js/ng-app/controllers/*.js',
+	  	'./src/js/ng-app/models/*.js',
+	  	'./src/js/ng-app/services/*.js'
 		], {});
-	return target.pipe(inject(sources))
+	return target
+		.pipe(inject(sources, {ignorePath: 'src', addRootSlash: false}))
 		.pipe(gulp.dest('./src'));
 });
 
