@@ -1,8 +1,8 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
-        "file": "plugins/com.megster.cordova.ble/www/ble.js",
-        "id": "com.megster.cordova.ble.ble",
+        "file": "plugins/cordova-plugin-ble-central/www/ble.js",
+        "id": "cordova-plugin-ble-central.ble",
         "clobbers": [
             "ble"
         ]
@@ -33,7 +33,7 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "com.megster.cordova.ble": "0.1.9",
+    "cordova-plugin-ble-central": "1.0.1",
     "cordova-plugin-splashscreen": "2.1.0",
     "cordova-plugin-whitelist": "1.0.0",
     "org.apache.cordova.dialogs": "0.3.0",

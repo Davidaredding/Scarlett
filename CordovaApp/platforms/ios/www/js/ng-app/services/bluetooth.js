@@ -1,6 +1,6 @@
-if(typeof ble === "undefined" || navigator.platform.match("Simulator"))
-	{
-		console.log("No bluetooth interface found; Running from debug ble service.");
+
+function createMockBle(){
+	console.log("Running from mock ble service.");
 		ble = {
 			self: this,
 			startScan: function(services,success,error)
@@ -79,22 +79,26 @@ if(typeof ble === "undefined" || navigator.platform.match("Simulator"))
 				return obj;
 			}
 		}
-
-	};
+}
 
 app.service("$Bluetooth",function($q){
 		
+		self = this;
 		this.Scanning=false;
 		this.service = "FFE0";
 		this.characteristic = "FFE1";
+		this.connectedDevice;
+		this.devices = []
+		
+
 		this.ScanForPeripherals = function()
 		{
 			var deferred = $q.defer();
-			var devices = [];
+			this.devices = [];
 			
 			setTimeout(ble.stopScan,
 				3000,
-				function(){deferred.resolve(devices);},
+				function(){deferred.resolve();},
 				function(){}
 				);
 
@@ -106,7 +110,7 @@ app.service("$Bluetooth",function($q){
 						ID:bt_device.id
 					};
 
-					devices.push(d);
+					self.devices.push(d);
 					
 				}, 
 				function(error){
@@ -117,14 +121,15 @@ app.service("$Bluetooth",function($q){
 			return deferred.promise;
 		};
 
-		this.ConnectToPeripheral= function(BT_dev_id)
+		this.ConnectToPeripheral= function(id)
 		{
 			var deferred = $q.defer()
-			console.log("Attempting to connect to " + BT_dev_id);
-			ble.connect(BT_dev_id,
+			console.log("Attempting to connect to " + id);
+			ble.connect(id,
 					function(peripheral)
 					{
 						deferred.notify(peripheral);
+						self.connectedDevice = peripheral;
 					},
 					function(error)
 					{
@@ -141,14 +146,16 @@ app.service("$Bluetooth",function($q){
 
 		};
 
-		this.Write= function(device_id, value){
+		this.Write= function(value){
+			
 			var deferred = $q.defer();
-			console.log("writing " + value);
+			console.log("Writing " + value + " to " + self.connectedDevice.id);
 			var a = new Uint8Array(1);
 			a[0] = value;
 
+
 			ble.writeWithoutResponse(
-				device_id, 
+				self.connectedDevice.id, 
 				this.service, 
 				this.characteristic,
 				a.buffer,

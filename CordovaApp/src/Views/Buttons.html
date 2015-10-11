@@ -1,0 +1,24 @@
+<style>
+	.list-group-item{
+		border-radius: .25em;
+		width: 100%;
+		line-height: 3em;
+		margin-bottom: .75em;
+		box-shadow: inset 0 0 0.5em black;
+		background: linear-gradient(#333 50%, #000 52%);
+		border: 1px solid #000;
+		font-size: 2em;
+		font-weight: bold;
+		color: #999 !important;
+		text-shadow: 0 0 15px;
+		text-align: center; 
+	}
+</style>
+
+<div ng-controller="buttonController as ButtonController">
+	<div class="list-group">
+		<a href="#/button/{{$index}}" class="list-group-item" ng-repeat="button in ButtonController.ButtonService.buttons track by $index">
+			{{button.Name}}
+		</a>
+	</div>
+</div>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Security-Policy" content="">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+    <!-- inject:css -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/spectrum.css">
+    <link rel="stylesheet" href="css/font-awesome-4.4.0/css/font-awesome.min.css">
+    <!-- endinject -->    
+
+  <meta charset="utf-8">
+  <title>Scarlett</title>
+  
+
+</head>
+
+<!-- Quick inline CSS -->
+<style>
+
+
+</style>
+
+
+<body  ng-controller="AppController as app">
+    <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <h2>Switch Free</h2>
+        <h5 class="pull-right"><a href="#/button/">Edit</a> </h5>
+    </div>
+</nav>
+    <div id="main">
+        <div ng-view></div>
+    </div>
+    
+<script src="cordova.js"></script>    
+<!-- inject:js -->
+
+<script src="js/node_modules/angular/angular.min.js"></script>
+
+<script src="js/node_modules/angular-route/angular-route.min.js"></script>
+
+<script src="js/ios9-browser-fix.js"></script>
+
+<script src="js/fastclick.js"></script>
+
+<script src="js/jquery.min.js"></script>
+
+<script src="js/bootstrap.min.js"></script>
+
+<script src="js/ng-app/app.js"></script>
+
+<script src="js/ng-app/controllers/button.js"></script>
+
+<script src="js/ng-app/controllers/home.js"></script>
+
+<script src="js/ng-app/models/button.js"></script>
+
+<script src="js/ng-app/services/bluetooth.js"></script>
+
+<script src="js/ng-app/services/buttons.js"></script>
+
+<script src="js/ng-app/services/virtual_devices.js"></script>
+
+<!-- endinject -->
+<script>
+    cordovaApp.initialize();
+</script>
+</body>
+</html>

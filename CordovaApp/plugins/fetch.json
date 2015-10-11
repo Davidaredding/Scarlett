@@ -7,14 +7,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "com.megster.cordova.ble": {
-        "source": {
-            "type": "registry",
-            "id": "com.megster.cordova.ble"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
     "cordova-plugin-splashscreen": {
         "source": {
             "type": "registry",
@@ -35,6 +27,14 @@
         "source": {
             "type": "registry",
             "id": "org.apache.cordova.vibration"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-ble-central": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-ble-central"
         },
         "is_top_level": true,
         "variables": {}
