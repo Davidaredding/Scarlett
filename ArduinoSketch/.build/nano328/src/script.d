@@ -11,4 +11,5 @@
  /usr/share/arduino/hardware/arduino/variants/eightanaloginputs/pins_arduino.h \
  /usr/share/arduino/hardware/arduino/variants/eightanaloginputs/../standard/pins_arduino.h \
  /usr/share/arduino/libraries/SoftwareSerial/SoftwareSerial.h \
- /usr/share/arduino/hardware/arduino/cores/arduino/Stream.h
+ /usr/share/arduino/hardware/arduino/cores/arduino/Stream.h \
+ src/SwitchPanel.h src/Switch.h

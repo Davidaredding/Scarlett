@@ -173,6 +173,18 @@ include .build/nano328/arduino/HardwareSerial.d
 
 
 
+.build/nano328/src/Switch.o : src/Switch.cpp
+	@echo [93msrc/Switch.cpp[0m
+	@mkdir -p .build/nano328/src
+	@/usr/bin/avr-g++ -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -ffunction-sections -fdata-sections -g -Os -w -I/usr/share/arduino/hardware/arduino/variants/eightanaloginputs -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/hardware/arduino/cores/arduino -fno-exceptions  -o $@ -c src/Switch.cpp
+include .build/nano328/src/Switch.d
+
+.build/nano328/src/SwitchPanel.o : src/SwitchPanel.cpp
+	@echo [93msrc/SwitchPanel.cpp[0m
+	@mkdir -p .build/nano328/src
+	@/usr/bin/avr-g++ -mmcu=atmega328p -DF_CPU=16000000L -DARDUINO=100 -I/usr/share/arduino/hardware/arduino/cores/arduino -ffunction-sections -fdata-sections -g -Os -w -I/usr/share/arduino/hardware/arduino/variants/eightanaloginputs -I/usr/share/arduino/libraries/SoftwareSerial -I/usr/share/arduino/hardware/arduino/cores/arduino -fno-exceptions  -o $@ -c src/SwitchPanel.cpp
+include .build/nano328/src/SwitchPanel.d
+
 .build/nano328/src/script.o : .build/nano328/src/script.cpp
 	@echo [93msrc/script.cpp[0m
 	@mkdir -p .build/nano328/src
@@ -185,7 +197,7 @@ include .build/nano328/src/script.d
 
 
 
-.build/nano328/firmware.elf : .build/nano328/src/script.o .build/nano328/SoftwareSerial/libSoftwareSerial.a .build/nano328/arduino/libarduino.a
+.build/nano328/firmware.elf : .build/nano328/src/Switch.o .build/nano328/src/SwitchPanel.o .build/nano328/src/script.o .build/nano328/SoftwareSerial/libSoftwareSerial.a .build/nano328/arduino/libarduino.a
 	@echo [92mLinking firmware.elf[0m
 	@/usr/bin/avr-gcc -mmcu=atmega328p -Wl,-Os -Wl,--gc-sections -o $@ $^ -lm
 

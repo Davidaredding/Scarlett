@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
+#include "SwitchPanel.h"
 void setup();
 void loop();
 void uart_read();
@@ -14,53 +15,69 @@ void toggleRelay(short relayMask);
 void turnRelayOn(short relayMask);
 void turnRelayOff(short relayMask);
 void WriteRelays();
-void PulseRegister();
+void PulseClock();
 void LatchRegister();
 #line 1 "src/script.ino"
 //#include <SoftwareSerial.h>
+//#include "SwitchPanel.h"
+//TODO: Rearrange these so we're not using all the analog pins for digital comms
+//Setup for SPI
 
-#define data 16 //DS pin 14
-#define clk 17 //SHCP Pin 11
-#define latch 18 //STCP pin 12 
-#define enabled 19 //OE pin 13 active low
+//Bluetooth Software Serial
+#define RX_S 4
+#define TX_S 5
 
-SoftwareSerial hm10(14,15); // RX, TX
+//74HC595 and 74HC165 Control pins
+#define DATA 12
+#define CLOCK 13
+
+#define CE 11     //Specific To 595
+#define LATCH 10
+
+#define LOAD 9   //165's load register.
+
+#define DEBUG true
+#define POLLING_PERIOD 1000 //In MS
+
+
+SoftwareSerial hm10(RX_S,TX_S); 
 bool CommandMode = false;
 char cmdBuffer[20];
 short cmdBufferCnt = 0;
-
 short hm10_buffer_size = 0;
 short hm10_buffer_wait = 0;
-
 short relayStatus = 0;
-
 char  processor_Buffer[24];
 short processor_Buffer_Index = 0;
-
 void (* processor_ptr)(char s);
-
-
+char inputs = 0;
+unsigned long lastRead = 0;
+SwitchPanel sp;
 
 
 void setup(){
+  
+
   // Open serial communications and wait for port to open:
   Serial.begin(9600);
-  // set the data rate for the SoftwareSerial port
+  // set the DATA rate for the SoftwareSerial port
   hm10.begin(9600);
 
-  digitalWrite(enabled,HIGH);
-  pinMode(enabled,OUTPUT);
-  pinMode(data,OUTPUT);
-  pinMode(clk,OUTPUT);
-  pinMode(latch,OUTPUT);
+  digitalWrite(CE,HIGH);
+  pinMode(CE,OUTPUT);
+  pinMode(DATA,INPUT); //shifts to input for load
+  pinMode(CLOCK,OUTPUT);
+  pinMode(LATCH,OUTPUT);
+  pinMode(LOAD,OUTPUT);
+
    
-  digitalWrite(data,LOW);
+  digitalWrite(DATA,LOW);
   for (int i = 0; i < 8; ++i)
   {
-    PulseRegister();
+    PulseClock();
   }
   LatchRegister();
-  digitalWrite(enabled,LOW);
+  digitalWrite(CE,LOW);
   
   Serial.println("STARTED");
 }
@@ -68,6 +85,7 @@ void setup(){
 void loop(){
   uart_read();
   blueToothSerialRead();
+  sp.Poll();
 }
 
 void uart_read()
@@ -150,11 +168,13 @@ void blueToothSerialRead(){
 }
 
 void setProcessor(char serialRead){
+  Serial.print("Received ");
+  Serial.println(serialRead,BIN);
     if(serialRead == 1){
       Serial.println("Using All Relay Processor");
       processor_ptr = &all_relay_Processor;
     }
-    if(serialRead == 'I'){
+    else if(serialRead == 'I'){
       Serial.println("Using Individual Relay Processor");
       processor_ptr = &individual_relay_processor;
     }
@@ -165,9 +185,12 @@ void setProcessor(char serialRead){
 
 //Sets all relays at once.
 void all_relay_Processor(char serialRead){
-  //this processor only requires one byte of data 
+
+  //this processor only requires one byte of DATA 
   //so we dont' need to use the buffer
   Serial.println("Relay Processor working ...");
+
+  Serial.println(serialRead,BIN);
   //Do work
   relayStatus = serialRead;
   WriteRelays();
@@ -242,22 +265,26 @@ void WriteRelays(){
   char temp = relayStatus;
   for (int i = 0; i < 8; ++i)
   {
-    digitalWrite(data,temp & 0x01);
-    PulseRegister();
+    digitalWrite(DATA,temp & 1);
+    PulseClock();
     temp >>= 1;
   }
   LatchRegister();
 }
 
-void PulseRegister(){
-  digitalWrite(clk,HIGH);
-  digitalWrite(clk,LOW);
+
+
+void PulseClock(){
+  digitalWrite(CLOCK,HIGH);
+  digitalWrite(CLOCK,LOW);
 }
 
 void LatchRegister(){
-  digitalWrite(latch,HIGH);
-  digitalWrite(latch,LOW);
+  digitalWrite(LATCH,HIGH);
+  digitalWrite(LATCH,LOW);
 }
+
+
 
 /**************** Processor Template *******************
  *  Used to create new processors and demonstrate the  *
