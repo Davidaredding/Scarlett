@@ -30,7 +30,10 @@
     <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <h2>Switch Free</h2>
-        <h5 class="pull-right"><a href="#/button/">Edit</a> </h5>
+        <h5 class="pull-right">
+            <a ng-click="state = !state" ng-show="state" href="#/button/">Edit</a> 
+            <a ng-click="state = !state" ng-hide="state" href="#/home/">Done</a> 
+        </h5>
     </div>
 </nav>
     <div id="main">

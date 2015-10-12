@@ -52,7 +52,9 @@ app.config(function($routeProvider, $compileProvider){
 
 });
 
-app.controller('AppController',[function(){}]);
+app.controller('AppController',['$scope', function($scope){
+    $scope.state = true;
+}]);
 
 
 
