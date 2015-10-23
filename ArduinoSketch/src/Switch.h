@@ -5,8 +5,9 @@
 class Switch
 {
 public:
+	short ID;
 	Switch();
-	Switch(byte mask);
+	Switch(byte mask, short id);
 	bool getState();
 	void setState(bool val);
 	byte Mask;

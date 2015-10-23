@@ -18,7 +18,7 @@ public:
 	SwitchPanel();
 	Switch Switches[SWITCH_COUNT];
 	void Poll();
-	static void SwitchEvent(Switch* sender);
+
 private:
 	byte current_switch_status;
 	byte previous_switch_status;

@@ -3,10 +3,12 @@
 
 Switch::Switch(){}
 
-Switch::Switch(byte mask)
+Switch::Switch(byte mask, short id)
 {
 	Mask = mask;
 	_state = 0;
+	ID = id;
+	switch_toggle_delegate = 0;
 }
 
 bool Switch::getState()

@@ -8,15 +8,14 @@ SwitchPanel::SwitchPanel()
 	lastRead = 0;
 	current_switch_status = 0;
 	previous_switch_status = 0;
-
+	
 	for(short i = 0; i < 8; i++)
 	{
 		byte b = 1<<i;
-		Switch s(b);
-		s.switch_toggle_delegate = &SwitchEvent;
+		Switch s(b,i);
 		Switches[i] = s;
-
 	}
+	
 }
 
 void SwitchPanel::Poll()
@@ -56,9 +55,10 @@ void SwitchPanel::ProcessCurrentSwitchStatus(){
 	Serial.println(current_switch_status,BIN);
 	Serial.println("--------------------");
 	#endif*/
+
 	if(previous_switch_status == current_switch_status)
 		return;
-
+		
 	previous_switch_status = current_switch_status;
 	for(int i=0; i< SWITCH_COUNT; i++)
 	{
@@ -66,18 +66,7 @@ void SwitchPanel::ProcessCurrentSwitchStatus(){
 	}
 }
 
-void SwitchPanel::SwitchEvent(Switch* sender)
-{
-	#ifdef SP_DEBUG
-	Serial.print("********** Switch Changed ");
-	Serial.println(sender->Mask,BIN);
-	Serial.print("**********");
-	if(sender->getState())
-		Serial.println("Switch ON");
-	if(!sender->getState())
-		Serial.println("Switch OFF");
-	#endif
-}
+
 
 void SwitchPanel::PulseClock(){
   digitalWrite(SP_CLOCK_PIN,HIGH);
