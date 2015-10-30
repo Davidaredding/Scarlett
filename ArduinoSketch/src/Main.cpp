@@ -34,11 +34,8 @@ void Main::Setup(){
   
   // set the DATA rate for the SoftwareSerial port
   hm10->begin(9600);
-  
-  
-  
-  
-  pinMode(DATA,OUTPUT); //shifts to input for load
+
+  pinMode(DATA,OUTPUT); 
   pinMode(CLOCK,OUTPUT);
   pinMode(LATCH,OUTPUT);
   pinMode(LOAD,OUTPUT);
@@ -243,16 +240,15 @@ void Main::turnRelayOff(short relayMask){
 
 void Main::writeRelays(){
   short temp = relayStatus;
-  /*Serial.print("Writing ");
+  Serial.print("Writing ");
   Serial.print(temp,BIN);
-  Serial.println(" to relays");*/
+  Serial.println(" to relays");
   
   for (int i = 0; i < 8; ++i)
   {
     digitalWrite(DATA,temp&1);
     pulseClock();
     temp >>= 1;
-    Serial.println(temp,BIN);
   }
   latchRegister();
 }
