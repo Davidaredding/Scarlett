@@ -1,10 +1,10 @@
 
 #include "Arduino.h"
+#include <EEPROM.h>
 #include <SoftwareSerial.h>
 #include "Main.h"
 #include "SwitchPanel.h"
 #include "Switch.h"
-
 
 //TODO: Rearrange these so we're not using all the analog pins for digital comms
 //Setup for SPI
@@ -15,43 +15,49 @@ Main::Main(){
   hm10 = new SoftwareSerial(RX_S,TX_S);
   relayStatus = 0;
   processor_Buffer_Index = 0;
-  switchBytes = {255,2,4,8,16,32,64,128};
+  switchBytes = {0,0,0,0,0,0,0};
   Main::instance = this;
 }
 
 void Main::Setup(){
-  
+  Serial.begin(9600);
+
+  Serial.println("Reading values from EEPROM");
+
+  for(int i =0; i<8; i++)
+  {
+    switchBytes[i] = EEPROM.read(i);
+  }
+
 
   // Open serial communications and wait for port to open:
-  Serial.begin(9600);
+  
   // set the DATA rate for the SoftwareSerial port
   hm10->begin(9600);
-
-  digitalWrite(CE,HIGH);
-  pinMode(CE,OUTPUT);
-  pinMode(DATA,INPUT); //shifts to input for load
+  
+  
+  
+  
+  pinMode(DATA,OUTPUT); //shifts to input for load
   pinMode(CLOCK,OUTPUT);
   pinMode(LATCH,OUTPUT);
   pinMode(LOAD,OUTPUT);
-
+  pinMode(SP_DATA_PIN,INPUT);
    
-  digitalWrite(DATA,LOW);
-  for (int i = 0; i < 8; ++i)
-  {
-    pulseClock();
-  }
-  latchRegister();
-  digitalWrite(CE,LOW);
+  relayStatus = 0;
+  writeRelays();
   
   SetupSwitchHandlers();
 
   Serial.println("STARTED IN MAIN");
 }
-
+int a = 0;
+int cnt = 1;
 void Main::Loop(){
   uart_read();
   blueToothSerialRead();
   sp.Poll();
+
 }
 
 void Main::uart_read(){
@@ -69,7 +75,10 @@ void Main::uart_read(){
 void Main::blueToothSerialRead(){
   while(hm10->available()>0)
   {
+    Serial.print("REceived Bluetooth -> ");
+
     char serialRead = hm10->read();
+    Serial.println(serialRead,BIN);
     if(processor_ptr == 0)
       setProcessor(serialRead);
     else
@@ -81,9 +90,23 @@ void Main::blueToothSerialRead(){
 void Main::setProcessor(char serialRead){
   Serial.print("Received ");
   Serial.println(serialRead,BIN);
-    if(serialRead == 1){
+    if(serialRead == 1 || serialRead == 'A'){
       Serial.println("Using All Relay Processor");
       processor_ptr = &Main::all_relay_processor;
+    }
+    else if(serialRead == 2 || serialRead == 'S'){
+      Serial.println("Using Switch processor");
+      processor_ptr = &Main::switch_processor;
+
+    }
+    else if(serialRead == 3 || serialRead == 'P'){
+      Serial.println("Programming Mode - EEPROM");
+      processor_ptr = &Main::eeprom_programming_processor;
+    }
+    else if(serialRead == 4 || serialRead == 'X'){
+      Serial.println("Setting All Relays Off!");
+      relayStatus = 0;
+      writeRelays();
     }
     else if(serialRead == 'I'){
       Serial.println("Using Individual Relay Processor");
@@ -148,6 +171,59 @@ void Main::individual_relay_processor(char serialRead){
       
     }
 }
+
+void Main::switch_processor(char serialRead)
+{
+  processor_Buffer[processor_Buffer_Index] = serialRead;
+  processor_Buffer_Index ++;
+  Serial.print(serialRead);
+
+  if(serialRead =='\r'){
+    int switch_id = processor_Buffer[0] - '0';
+    bool state = processor_Buffer[1] - '0';
+
+    if(switch_id <0 || switch_id > 7){
+      Serial.print("Invalid switch id : ");
+      Serial.println(switch_id);
+    }
+      
+      ToggleSwitch(switch_id,state);
+      processorCleanup();
+  }
+}
+
+void Main::eeprom_programming_processor(char serialRead)
+{
+    processor_Buffer[processor_Buffer_Index] = serialRead;
+    processor_Buffer_Index ++;
+    Serial.print(serialRead);
+ 
+    if(serialRead == '\r')
+    {
+      short s_id = processor_Buffer[0] - '0';
+      processor_Buffer[0] = '0';
+
+      Serial.println(processor_Buffer);
+
+      short s_val = atoi(processor_Buffer);
+      Serial.println(s_val,BIN);
+
+      
+      if(s_id <0 || s_id > 7){
+        Serial.print("Rejecting invalid switch id : ");
+        Serial.println(s_id);
+      }
+      else
+      {
+        Serial.println("Saved programming inputs");
+        EEPROM.write(s_id,s_val);
+        switchBytes[s_id] = s_val;
+      }
+  
+      processorCleanup();
+    }
+}
+
 void Main::processorCleanup(){
       memset(processor_Buffer,0,processor_Buffer_Index);
       processor_ptr = 0;
@@ -166,13 +242,17 @@ void Main::turnRelayOff(short relayMask){
 }
 
 void Main::writeRelays(){
-  Serial.println("Writing to relays");
-  char temp = relayStatus;
+  short temp = relayStatus;
+  /*Serial.print("Writing ");
+  Serial.print(temp,BIN);
+  Serial.println(" to relays");*/
+  
   for (int i = 0; i < 8; ++i)
   {
-    digitalWrite(DATA,temp & 1);
+    digitalWrite(DATA,temp&1);
     pulseClock();
     temp >>= 1;
+    Serial.println(temp,BIN);
   }
   latchRegister();
 }
@@ -191,58 +271,68 @@ void Main::latchRegister(){
 //************* Toggle Switch Hanlders ***********//
 void Main::SetupSwitchHandlers()
 {
-  sp.Switches[0].switch_toggle_delegate = &Switch_0_Toggle;
-  sp.Switches[1].switch_toggle_delegate = &Switch_1_Toggle;
-  sp.Switches[2].switch_toggle_delegate = &Switch_2_Toggle;
-  sp.Switches[3].switch_toggle_delegate = &Switch_3_Toggle;
-  sp.Switches[4].switch_toggle_delegate = &Switch_4_Toggle;
-  sp.Switches[5].switch_toggle_delegate = &Switch_5_Toggle;
-  //sp.Switches[6].switch_toggle_delegate = &Switch_6_Toggle;
-  sp.Switches[7].switch_toggle_delegate = &Switch_7_Toggle;
+  sp.Switches[0].switch_toggle_delegate = &Hardware_Switch_Toggle;
+  sp.Switches[1].switch_toggle_delegate = &Hardware_Switch_Toggle;
+  sp.Switches[2].switch_toggle_delegate = &Hardware_Switch_Toggle;
+  sp.Switches[3].switch_toggle_delegate = &Hardware_Switch_Toggle;
+  sp.Switches[4].switch_toggle_delegate = &Hardware_Switch_Toggle;
+  sp.Switches[5].switch_toggle_delegate = &Hardware_Switch_Toggle;
+  sp.Switches[6].switch_toggle_delegate =Hardware_Switch_Toggle;
+  sp.Switches[7].switch_toggle_delegate = &Hardware_Switch_Toggle;
 }
 
-void Main::Switch_0_Toggle(Switch* sender)
+void Main::ToggleSwitch(short id, bool state)
 {
-  bool state = sender->getState();
-  short id = sender->ID;
-  Main::instance->relayStatus = Main::instance->switchBytes[id];
-  Main::instance->writeRelays();
+  if(id<0 || id > 7)
+  {
+    Serial.print("Invalid ID ");
+    Serial.println(id,DEC);
+    return;
+  }
+
+  Serial.print("Switch ");
+  Serial.print(id);
+  Serial.print(" turned ");
+  if(state)
+    Serial.println("ON");
+  else
+    Serial.println("OFF");
+
+
+
+   short mask = Main::instance->switchBytes[id];
+   Serial.print("Mask : ");
+   Serial.println(mask,BIN);
+   if(state)
+   {
+      Main::instance->relayStatus |= mask;
+      writeRelays();
+   }  
+   else
+   {
+      Main::instance->relayStatus = relayStatus & ~mask;
+      writeRelays();
+   }
+
+   Serial.print("Current Relay status : ");
+   Serial.println(Main::instance->relayStatus,BIN);
+
 
 }
 
-void Main::Switch_1_Toggle(Switch* sender)
+
+void Main::Hardware_Switch_Toggle(Switch* sender)
 {
-
-}
-
-void Main::Switch_2_Toggle(Switch* sender)
-{
- 
-
-}
-
-void Main::Switch_3_Toggle(Switch* sender)
-{
-
-
-}
-
-void Main::Switch_4_Toggle(Switch* sender)
-{
-
-}
-
-void Main::Switch_5_Toggle(Switch* sender)
-{
-
-}
-
-void Main::Switch_6_Toggle(Switch* sender)
-{
-
-}
-
-void Main::Switch_7_Toggle(Switch* sender)
-{
+  
+    bool state = sender->getState();
+    short id = sender->ID;
+    Serial.print("Hardware switch ");
+    Serial.print(id,DEC);
+    Serial.print(" set ");
+    if(state)
+      Serial.println("ON");
+    else
+      Serial.println("OFF");
+    Main::instance->ToggleSwitch(id,state);
   
 }

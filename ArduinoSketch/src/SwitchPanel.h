@@ -6,7 +6,7 @@
 
 #define SWITCH_COUNT 8
 
-#define SP_DATA_PIN 12
+#define SP_DATA_PIN 8
 #define SP_CLOCK_PIN 13
 #define SP_LOAD_PIN 9
 #define POLLING_PERIOD 50
